@@ -61,6 +61,7 @@ module Fingers
       "colemak-homerow":    "arstneiodh",
       "colemak-left-hand":  "arstqwfpzxcv",
       "colemak-right-hand": "neioluymjhk",
+      "custom":             "fgrevctbyumioqaz",  # no hjklnp because ctrl-<hjklnp> won't work because I map them to something else in Karabiner.
     }
 
     def initialize(

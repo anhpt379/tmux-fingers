@@ -1,4 +1,3 @@
-
 ![tmux-fingers](./logo.svg)
 
 ![demo](https://github.com/Morantron/tmux-fingers/assets/3304507/cafe8877-1c98-41b1-bb65-b72129fea701)
@@ -47,7 +46,11 @@ Add the following to your list of TPM plugins in `.tmux.conf`:
 set -g @plugin 'Morantron/tmux-fingers'
 ```
 
-Hit <kbd>prefix</kbd> + <kbd>I</kbd> to fetch and source the plugin. The first time you run it you'll be presented with a wizard to complete the installation.
+Hit <kbd>prefix</kbd> + <kbd>I</kbd> to fetch and source the plugin. The first time you run it you'll be presented with a wizard to complete the installation. Depending on the platform, the wizard will offer the following installation methods:
+
+- Building from source (requires [crystal](https://crystal-lang.org/install/)). _Available in all platforms_
+- Install through [brew](https://brew.sh). _Mac OS only_.
+- Download standalone binary. _Linux x86 only_.
 
 ## Manual
 
@@ -69,7 +72,7 @@ Reload TMUX conf by running:
 $ tmux source-file ~/.tmux.conf
 ```
 
- The first time you run it you'll be presented with a wizard to complete the installation.
+The first time you run it you'll be presented with a wizard to complete the installation.
 
 # Configuration
 
@@ -77,7 +80,7 @@ NOTE: for changes to take effect, you'll need to source again your `.tmux.conf` 
 
 * [@fingers-key](#fingers-key)
 * [@fingers-jump-key](#fingers-jump-key)
-* [@fingers-patterns-N](#fingers-patterns-N)
+* [@fingers-pattern-N](#fingers-pattern-n)
 * [@fingers-main-action](#fingers-main-action)
 * [@fingers-ctrl-action](#fingers-ctrl-action)
 * [@fingers-alt-action](#fingers-alt-action)
@@ -117,7 +120,7 @@ Customize how to enter fingers jump mode. Always preceded by prefix: `prefix + @
 
 In jump mode, the cursor will be placed in the position of the match after the hint is selected.
 
-## @fingers-patterns-N
+## @fingers-pattern-N
 
 You can also add additional patterns if you want more stuff to be highlighted:
 
@@ -197,13 +200,13 @@ Supported styles are: `bright`, `bold`, `dim`, `underscore`, `italics`.
 
 `default: "fg=yellow"`
 
-Custom styles for the highlighted match. See [@fingers-hint-format](#fingers-hint-format) for more details.
+Custom styles for the highlighted match. See [@fingers-hint-style](#fingers-hint-style) for more details.
 
 ## @fingers-backdrop-style
 
 `default: ""`
 
-Custom styles for all the text that is not matched. See [@fingers-hint-format](#fingers-hint-format) for more details.
+Custom styles for all the text that is not matched. See [@fingers-hint-style](#fingers-hint-style) for more details.
 
 ## @fingers-selected-hint-style
 

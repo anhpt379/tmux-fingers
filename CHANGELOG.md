@@ -1,3 +1,9 @@
+## 2.3.2 - 02 Feb 2025
+
+* :paste: will now exit copy mode right before pasting.
+* Documentation improvements.
+* Properly handle single quotes in url pattern.
+
 ## 2.3.1 - 10 Dec 2024
 
 * Fix :paste: action.

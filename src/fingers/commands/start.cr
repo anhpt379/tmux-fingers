@@ -31,7 +31,7 @@ module Fingers::Commands
     @last_pane_id : String | Nil
     @mode : String = "default"
     @pane_id : String = ""
-    @active_pane_id : String | Nil
+    @active_pane : Tmux::Pane | Nil
     @patterns : Array(String) = [] of String
     @main_action : String | Nil
     @ctrl_action : String | Nil
@@ -40,9 +40,11 @@ module Fingers::Commands
 
     def setup : Nil
       @name = "start"
-      add_argument "pane_id", required: true
+      add_argument "pane_id",
+                 description: "pane id (also accepts tmux target-pane tokens specified in tmux man pages)",
+                 required: true
       add_option "mode",
-                 description: "jump or not",
+                 description: "can be \"jump\" or \"default\"",
                  type: :single,
                  default: "default"
 
@@ -162,13 +164,11 @@ module Fingers::Commands
     private def parse_pane_target_format!(pane_target_format)
       if pane_target_format.match(/^%[0-9]+$/)
         @pane_id = pane_target_format
-        @active_pane_id = pane_target_format
-        return
+        @active_pane = target_pane
+      else
+        @pane_id = tmux.exec("display-message -t #{pane_target_format} -p '\#{pane_id}'").chomp
+        @active_pane = tmux.list_panes("\#{pane_active}").first
       end
-
-      @pane_id = tmux.exec("display-message -t #{pane_target_format} -p '\#{pane_id}'").chomp
-      active_pane = tmux.list_panes("{active}").first
-      @active_pane_id = active_pane.pane_id unless active_pane.nil?
     end
 
     private def show_hints
@@ -206,7 +206,7 @@ module Fingers::Commands
         hint: state.input,
         modifier: state.modifier,
         match: state.result,
-        original_pane: target_pane,
+        original_pane: active_pane,
         offset: match ? match.not_nil!.offset : nil,
         mode: mode,
         main_action: @main_action,
@@ -219,7 +219,7 @@ module Fingers::Commands
     end
 
     private def select_active_pane
-      tmux.select_pane(@active_pane_id) if @active_pane_id
+      tmux.select_pane(active_pane.pane_id)
     end
 
     private def needs_resize?
@@ -238,6 +238,10 @@ module Fingers::Commands
 
     private getter target_pane : Tmux::Pane do
       tmux.find_pane_by_id(@pane_id).not_nil!
+    end
+
+    private getter active_pane : Tmux::Pane do
+      @active_pane.not_nil!
     end
 
     private getter mode : String do
